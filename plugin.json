@@ -1,0 +1,7 @@
+{
+  "name": "KycbPlugin",
+  "author": "Kycb42148",
+  "main": "kycb.plugin.KycbPlugin",
+  "description": "Plugin for my server",
+  "version": 1.0
+}
