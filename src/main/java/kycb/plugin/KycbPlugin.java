@@ -3,7 +3,7 @@ package kycb.plugin;
 import arc.util.*;
 import mindustry.mod.*;
 
-public class KycbPlugin extends Plugin{
+public class KycbPlugin extends Plugin {
 
     @Override
     public void init() {
@@ -11,12 +11,12 @@ public class KycbPlugin extends Plugin{
     }
 
     @Override
-    public void registerServerCommands(CommandHandler handler){
+    public void registerServerCommands(CommandHandler handler) {
 
     }
 
     @Override
-    public void registerClientCommands(CommandHandler handler){
+    public void registerClientCommands(CommandHandler handler) {
 
     }
 }
