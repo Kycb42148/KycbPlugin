@@ -4,6 +4,7 @@ import arc.files.Fi;
 import arc.struct.ObjectMap;
 import arc.util.Structs;
 import mindustry.Vars;
+import mindustry.gen.Player;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -78,5 +79,10 @@ public class Bundle {
             bundle = bundles.get(defaultLocale);
         }
         return bundle;
+    }
+
+    public static Locale findLocale (Player player) {
+        Locale locale = Structs.find(supportedLocales, l -> player.locale.equals(l.toString()) || player.locale.startsWith(l.toString()));
+        return locale != null ? locale : defaultLocale;
     }
 }
