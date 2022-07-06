@@ -28,7 +28,7 @@ public class Bundle {
 
             String[] codes;
             if (!code.contains("_")) { // bundle.properties
-                supportedLocales[i] = defaultLocale;
+                supportedLocales[i] = Locale.ROOT;
             } else if ((codes = code.split("_")).length == 3) { // bundle_uk_UA.properties
                 supportedLocales[i] = new Locale(codes[1], codes[2]);
             } else { // bundle_ru.properties
@@ -73,11 +73,13 @@ public class Bundle {
 
     private static ResourceBundle getOrLoad(Locale locale) {
         ResourceBundle bundle = bundles.get(locale);
-        if (bundle == null && Structs.contains(supportedLocales, locale)) {
-            bundles.put(locale, bundle = ResourceBundle.getBundle("bundles.bundle", locale));
-        } else {
-            bundle = bundles.get(defaultLocale);
-        }
+        if (bundle == null) {
+            if (Structs.contains(supportedLocales, locale)) {
+              bundles.put(locale, bundle = ResourceBundle.getBundle("bundles.bundle", locale));
+            } else {
+              bundle = bundles.get(defaultLocale);
+            }
+          }
         return bundle;
     }
 
