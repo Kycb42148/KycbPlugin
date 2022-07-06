@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Objects;
 
 public class ResourceUtil {
-    public static void saveFileFromResources(String fileName, String destination) {
+    public static void copyFileFromResources(String fileName, String destination) {
         Fi destinationFile = Vars.modDirectory.child(destination);
         if (!destinationFile.exists()) {
             try {
@@ -21,5 +21,9 @@ public class ResourceUtil {
                 Log.err(e);
             }
         }
+    }
+
+    public static void copyFileFromResources(String fileName) {
+        copyFileFromResources(fileName, fileName);
     }
 }
