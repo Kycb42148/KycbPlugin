@@ -5,7 +5,6 @@ import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.Structs;
 import mindustry.Vars;
-import mindustry.gen.Player;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -58,6 +57,10 @@ public class Bundle {
 
     public static String format(String key, Locale locale, Object... values) {
         String pattern = get(key, locale);
+        if (values.length == 0) {
+            return pattern;
+        }
+
         MessageFormat format = formats.get(locale);
         if (!Structs.contains(supportedLocales, locale)) {
             format = formats.get(defaultLocale, () -> new MessageFormat(pattern, defaultLocale));

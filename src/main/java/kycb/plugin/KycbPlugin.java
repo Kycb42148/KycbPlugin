@@ -19,22 +19,22 @@ import mindustry.ui.Menus;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class KycbPlugin extends Plugin {
 
     private static int infoMenuId;
-    private Config config;
-    private Locale locale;
+    private static Config config;
 
-    private HashSet<String> votes = new HashSet<>();
+    private final Set<String> votes = new HashSet<>();
 
     @Override
     public void init() {
-        UpdateConfig();
+        updateConfig();
         infoMenuId = Menus.registerMenu((player, option) -> {
             if (option != 0) return;
             Locale playerLocale = Bundle.findLocale(player.locale);
-            Call.menu(player.con,-1, Bundle.get("game.info.title", playerLocale), Bundle.get("game.info.text", playerLocale), new String[][]{{Bundle.get("menu.close", playerLocale)}});
+            Call.menu(player.con, -1, Bundle.get("game.info.title", playerLocale), Bundle.get("game.info.text", playerLocale), new String[][]{{Bundle.get("menu.close", playerLocale)}});
         });
         Events.on(PlayerJoin.class, event -> {
             Locale playerLocale = Bundle.findLocale(event.player.locale);
@@ -43,7 +43,8 @@ public class KycbPlugin extends Plugin {
         Events.on(PlayerLeave.class, event -> {
             if (votes.contains(event.player.uuid())) {
                 votes.remove(event.player.uuid());
-                Call.sendMessage(Bundle.format("game.skip.leave", locale, event.player.name, votes.size(), (int) Math.ceil(config.skipRatio * Groups.player.size())));
+                sendBundled("game.skip.leave", event.player.name, votes.size(),
+                        (int) Math.ceil(config.skipRatio * Groups.player.size()));
             }
         });
         Log.info("Kycb plugin loaded.");
@@ -60,17 +61,17 @@ public class KycbPlugin extends Plugin {
             if (!config.skip) return;
             votes.add(player.uuid());
             int required = (int) Math.ceil(config.skipRatio * Groups.player.size());
-            Call.sendMessage(Bundle.format("game.skip.voted", locale, player.name, votes.size(), required));
+            sendBundled("game.skip.voted", player.name, votes.size(), required);
 
             if (votes.size() >= required) {
                 votes.clear();
-                Call.sendMessage(Bundle.get("game.skip.changing", locale));
+                sendBundled("game.skip.changing");
                 Events.fire(new GameOverEvent(Team.crux));
             }
         });
     }
 
-    private void UpdateConfig() {
+    private void updateConfig() {
         Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
         json.setUsePrototypes(false);
@@ -78,6 +79,12 @@ public class KycbPlugin extends Plugin {
         if (configFile.exists())
             config = json.fromJson(Config.class, configFile.readString());
         else configFile.writeString(json.toJson(config = new Config()));
-        locale = Bundle.findLocale(config.locale);
+    }
+
+    private static void sendBundled(String key, Object... format) {
+        Groups.player.forEach(p -> {
+            Locale locale = Bundle.findLocale(p.locale);
+            p.sendMessage(Bundle.format(key, locale, format));
+        });
     }
 }
