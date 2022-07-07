@@ -86,8 +86,8 @@ public class Bundle {
         return bundle;
     }
 
-    public static Locale findLocale(Player player) {
-        Locale locale = Structs.find(supportedLocales, l -> player.locale.equals(l.toString()) || player.locale.startsWith(l.toString()));
+    public static Locale findLocale(String localeString) {
+        Locale locale = Structs.find(supportedLocales, l -> localeString.equals(l.toString()) || localeString.startsWith(l.toString()));
         return locale != null ? locale : defaultLocale;
     }
 }
