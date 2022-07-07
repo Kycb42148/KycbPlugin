@@ -44,7 +44,8 @@ public class Bundle {
     public static String get(String key, Locale locale) {
         try {
             ResourceBundle bundle = getOrLoad(locale);
-            return bundle.containsKey(key) ? bundle.getString(key) : "???" + key + "???";
+
+            return bundle.getString(key);
         } catch (MissingResourceException t) {
             Log.err("Unknown key '@', locale: @", key, locale);
             return "???" + key + "???";
