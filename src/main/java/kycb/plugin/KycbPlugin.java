@@ -69,6 +69,13 @@ public class KycbPlugin extends Plugin {
                 Events.fire(new GameOverEvent(Team.crux));
             }
         });
+
+        //TODO: Add "help" command with localisation
+
+        handler.<Player>register("hub", Bundle.get("commands.hub.usage"), Bundle.get("commands.hub.description"), (args, player) -> {
+            String[] address = config.hubAddress.split(":");
+            Call.connect(player.con, address[0], (address[1] != null && Strings.canParseInt(address[1])) ? Integer.parseInt(address[1]): Vars.port);
+        });
     }
 
     private void updateConfig() {
