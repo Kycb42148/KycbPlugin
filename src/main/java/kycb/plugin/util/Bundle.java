@@ -2,6 +2,7 @@ package kycb.plugin.util;
 
 import arc.files.Fi;
 import arc.struct.ObjectMap;
+import arc.util.Log;
 import arc.util.Structs;
 import mindustry.Vars;
 import mindustry.gen.Player;
@@ -43,8 +44,9 @@ public class Bundle {
     public static String get(String key, Locale locale) {
         try {
             ResourceBundle bundle = getOrLoad(locale);
-            return bundle != null && bundle.containsKey(key) ? bundle.getString(key) : "???" + key + "???";
+            return bundle.containsKey(key) ? bundle.getString(key) : "???" + key + "???";
         } catch (MissingResourceException t) {
+            Log.err("Unknown key '@', locale: @", key, locale);
             return "???" + key + "???";
         }
     }
@@ -75,15 +77,15 @@ public class Bundle {
         ResourceBundle bundle = bundles.get(locale);
         if (bundle == null) {
             if (Structs.contains(supportedLocales, locale)) {
-              bundles.put(locale, bundle = ResourceBundle.getBundle("bundles.bundle", locale));
+                bundles.put(locale, bundle = ResourceBundle.getBundle("bundles.bundle", locale));
             } else {
-              bundle = bundles.get(defaultLocale);
+                bundle = getOrLoad(defaultLocale);
             }
-          }
+        }
         return bundle;
     }
 
-    public static Locale findLocale (Player player) {
+    public static Locale findLocale(Player player) {
         Locale locale = Structs.find(supportedLocales, l -> player.locale.equals(l.toString()) || player.locale.startsWith(l.toString()));
         return locale != null ? locale : defaultLocale;
     }
