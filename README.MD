@@ -1,6 +1,6 @@
 ### Features
 
-Currently, there is no features...
+Currently, there is no unique features...
 
 ### Building
 
@@ -13,4 +13,5 @@ Troubleshooting: If you see error like `./gradlew: Permission denied`, proceed `
 Move output jar to your server's `config/mods` directory and restart the server.
 
 If it installed, you will see something like `[XX-XX-XXXX XX:XX:XX] [I] Kycb plugin loaded.`
+
 You can check installed plugin list using `mods` server command.
